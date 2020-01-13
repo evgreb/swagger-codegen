@@ -6,7 +6,7 @@ import { {{this}} } from './{{this}}';
 {{/each}}
 
 {{#isEnum}}
-    {{>enum}}
+{{>modelEnum}}
 {{/isEnum}}{{^isEnum}}{{#isAlias}}
 //alias
 {{/isAlias}}{{^isAlias}}{{#taggedUnions}}

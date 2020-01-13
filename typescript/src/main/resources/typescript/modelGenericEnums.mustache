@@ -1,0 +1,7 @@
+{{#has this 'enums'}}
+    {{#vars}}
+        {{#is this 'enum'}}
+type {{enumName}} = {{#allowableValues}}{{#enumVars}}{{{value}}}{{^@last}} | {{/@last}}{{/enumVars}}{{/allowableValues}};
+        {{/is}}
+    {{/vars}}
+{{/has}}
