@@ -3,4 +3,5 @@ export interface {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{
     {{#isReadOnly}}readonly {{/isReadOnly}}{{name}}{{^required}}?{{/required}}: {{#isEnum}}{{enumName}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}};
 {{/vars}}
 }
+
 {{>modelGenericEnums}}

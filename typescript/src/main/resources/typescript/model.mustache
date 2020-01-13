@@ -1,10 +1,10 @@
 {{#models}}
 {{#model}}
-
 {{#each imports}}
 import { {{this}} } from './{{this}}';
-{{/each}}
+{{#@last}}
 
+{{/@last}}{{/each}}
 {{#isEnum}}
 {{>modelEnum}}
 {{/isEnum}}{{^isEnum}}{{#isAlias}}
@@ -12,7 +12,7 @@ import { {{this}} } from './{{this}}';
 {{/isAlias}}{{^isAlias}}{{#taggedUnions}}
 //modelTaggedUnion
 {{/taggedUnions}}{{^taggedUnions}}
-    {{>modelGeneric}}
+{{>modelGeneric}}
 {{/taggedUnions}}{{/isAlias}}{{/isEnum}}
 {{/model}}
 {{/models}}
