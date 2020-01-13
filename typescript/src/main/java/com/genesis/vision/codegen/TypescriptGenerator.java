@@ -2,11 +2,33 @@ package com.genesis.vision.codegen;
 
 import io.swagger.codegen.v3.*;
 import io.swagger.codegen.v3.generators.typescript.AbstractTypeScriptClientCodegen;
+import io.swagger.codegen.v3.generators.util.OpenAPIUtil;
+
+import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.BooleanSchema;
+import io.swagger.v3.oas.models.media.ComposedSchema;
+import io.swagger.v3.oas.models.media.DateSchema;
+import io.swagger.v3.oas.models.media.DateTimeSchema;
+import io.swagger.v3.oas.models.media.IntegerSchema;
+import io.swagger.v3.oas.models.media.MapSchema;
+import io.swagger.v3.oas.models.media.NumberSchema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static io.swagger.codegen.v3.generators.handlebars.ExtensionHelper.getBooleanValue;
+import static io.swagger.codegen.v3.CodegenConstants.IS_ENUM_EXT_NAME;
+
 public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
+
+  private static Logger LOGGER = LoggerFactory.getLogger(AbstractTypeScriptClientCodegen.class);
 
   // source folder where to write the files
   protected String sourceFolder = "src";
@@ -20,6 +42,18 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
    */
   public CodegenType getTag() {
     return CodegenType.CLIENT;
+  }
+
+  @Override
+  public void processOpts() {
+    super.processOpts();
+
+    if (StringUtils.isBlank(templateDir)) {
+      embeddedTemplateDir = templateDir = getTemplateDir();
+    }
+
+    languageSpecificPrimitives.add("Blob");
+    typeMapping.put("file", "Blob");
   }
 
   /**
@@ -83,14 +117,6 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
      */
     modelPackage = "model";
 
-    /**
-     * Reserved words.  Override this with reserved words specific to your language
-     */
-    reservedWords = new HashSet<String> (
-      Arrays.asList(
-        "sample1",  // replace with static values
-        "sample2")
-    );
 
     /**
      * Additional Properties.  These values can be passed to the templates and
@@ -107,27 +133,6 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
       "",                                                       // the destination folder, relative `outputFolder`
       "myFile.sample")                                          // the output file
     );
-
-    /**
-     * Language Specific Primitives.  These types will not trigger imports by
-     * the client generator
-     */
-    languageSpecificPrimitives = new HashSet<String>(
-      Arrays.asList(
-        "Type1",      // replace these with your types
-        "Type2")
-    );
-  }
-
-  /**
-   * Escapes a reserved word as defined in the `reservedWords` array. Handle escaping
-   * those terms here.  This logic is only called if a variable matches the reserved words
-   * 
-   * @return the escaped term
-   */
-  @Override
-  public String escapeReservedWord(String name) {
-    return "_" + name;  // add an underscore to the name
   }
 
   /**

@@ -1,2 +1,18 @@
+{{#models}}
+{{#model}}
 
-# This is a sample model mustache template.
+{{#each imports}}
+import { {{this}} } from './{{this}}';
+{{/each}}
+
+{{#isEnum}}
+    {{>enum}}
+{{/isEnum}}{{^isEnum}}{{#isAlias}}
+//alias
+{{/isAlias}}{{^isAlias}}{{#taggedUnions}}
+//modelTaggedUnion
+{{/taggedUnions}}{{^taggedUnions}}
+    {{>modelGeneric}}
+{{/taggedUnions}}{{/isAlias}}{{/isEnum}}
+{{/model}}
+{{/models}}
