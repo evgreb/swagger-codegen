@@ -55,6 +55,13 @@ export default class {{classname}} {
     {{/queryParams}}
     })
 
+    {{#hasFormParams}}
+    const body = new FormData();
+    {{#formParams}}
+    body.append("{{baseName}}", {{paramName}});
+    {{/formParams}}
+    {{/hasFormParams}}
+
     return fetch(query, {
         ...init,
         method: "{{httpMethod}}"{{#hasHeaderParams}},
