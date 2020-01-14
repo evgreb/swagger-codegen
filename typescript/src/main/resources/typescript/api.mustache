@@ -1,3 +1,4 @@
+import { buildPathString, buildQueryString } from "../utils";
 {{#imports}}
 import { {{classname}} } from '../{{filename}}';
 {{/imports}}
@@ -9,7 +10,7 @@ export default class {{classname}} {
 
     {{operationId}} = ({{#hasRequiredParams}}
         {{#requiredParams}}
-        {{baseName}}: {{dataType}},
+        {{paramName}}: {{dataType}},
         {{/requiredParams}}
     {{/hasRequiredParams}}
     {{#hasOptionalParams}}
@@ -21,6 +22,38 @@ export default class {{classname}} {
         } = {},
     {{/hasOptionalParams}}
         init: RequestInit = {}) => {
+    {{#hasRequiredParams}}
+        {{#requiredParams}}
+            {{#isConstEnumParam}}
+                let {{paramName}} = {{{dataType}}};
+            {{/isConstEnumParam}}
+            {{^isConstEnumParam}}
+                if ({{paramName}} === null || {{paramName}} === undefined) {
+                throw new Error('Required parameter {{paramName}} was null or undefined when calling {{nickname}}.');
+                }
+            {{/isConstEnumParam}}
+        {{/requiredParams}}
+    {{/hasRequiredParams}}
+    {{#hasOptionalParams}}
+        const {
+        {{#allParams}}{{^required}}
+            {{paramName}}{{#hasMore}},{{/hasMore}}
+        {{/required}}
+        {{/allParams}}
+        } = options;
+    {{/hasOptionalParams}}
+
+    const path = buildPathString("{{path}}", {
+        {{#pathParams}}
+        {{paramName}}{{#hasMore}},{{/hasMore}}
+        {{/pathParams}}
+    })
+
+    const query = buildQueryString(path, {
+        {{#queryParams}}
+        {{paramName}}{{#hasMore}},{{/hasMore}}
+        {{/queryParams}}
+    })
 
     }
 {{/operation}}

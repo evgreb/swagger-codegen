@@ -129,9 +129,9 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
      * entire object tree available.  If the input file has a suffix of `.mustache
      * it will be processed by the template engine.  Otherwise, it will be copied
      */
-    supportingFiles.add(new SupportingFile("myFile.mustache",   // the input template or file
-      "",                                                       // the destination folder, relative `outputFolder`
-      "myFile.sample")                                          // the output file
+    supportingFiles.add(new SupportingFile("utils.mustache",   // the input template or file
+      sourceFolder,                                                       // the destination folder, relative `outputFolder`
+      "utils.ts")                                          // the output file
     );
   }
 
