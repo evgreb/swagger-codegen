@@ -14,6 +14,8 @@ import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.BinarySchema;
+import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.apache.commons.lang3.StringUtils;
 
@@ -52,8 +54,8 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
       embeddedTemplateDir = templateDir = getTemplateDir();
     }
 
-    languageSpecificPrimitives.add("Blob");
-    typeMapping.put("file", "Blob");
+    languageSpecificPrimitives.add("File");
+    typeMapping.put("file", "File");
   }
 
   /**
@@ -201,5 +203,18 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
   @Override
   public String toApiImport(String name) {
     return apiPackage() + "/" + toApiFilename(name);
+  }
+
+  @Override
+  public boolean isDataTypeFile(final String dataType) {
+    return dataType != null && dataType.equals("File");
+  }
+
+  @Override
+  public String getTypeDeclaration(Schema propertySchema) {
+    if(propertySchema instanceof FileSchema || propertySchema instanceof BinarySchema) {
+      return "File";
+    }
+    return super.getTypeDeclaration(propertySchema);
   }
 }
