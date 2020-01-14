@@ -50,11 +50,21 @@ export default class {{classname}} {
     })
 
     const query = buildQueryString(path, {
-        {{#queryParams}}
-        {{paramName}}{{#hasMore}},{{/hasMore}}
-        {{/queryParams}}
+    {{#queryParams}}
+        {{baseName}}: {{paramName}}{{#hasMore}},{{/hasMore}}
+    {{/queryParams}}
     })
 
+    return fetch(query, {
+        ...init,
+        method: "{{httpMethod}}"{{#hasHeaderParams}},
+        headers: {
+        {{#headerParams}}
+            {{baseName}}: {{paramName}}{{#hasMore}},{{/hasMore}}
+        {{/headerParams}}
+        }
+        {{/hasHeaderParams}}
+    })
     }
 {{/operation}}
 {{/operations}}
