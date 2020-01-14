@@ -1,6 +1,6 @@
 export interface {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{
 {{#vars}}
-    {{#isReadOnly}}readonly {{/isReadOnly}}{{name}}{{^required}}?{{/required}}: {{#isEnum}}{{enumName}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}};
+    {{#isReadOnly}}readonly {{/isReadOnly}}{{name}}: {{#isEnum}}{{enumName}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}};
 {{/vars}}
 }
 
