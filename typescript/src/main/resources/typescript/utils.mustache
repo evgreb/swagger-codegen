@@ -27,7 +27,9 @@ export const paramToString = (param?: string | number | Date) => {
 export const buildQueryString = (path: string, queryParams: { [key: string]: any }): string => {
     const url = new URL(path);
     for (let key in queryParams) {
-        url.searchParams.append(key, queryParams[key]);
+        if (queryParams[key] !== undefined) {
+            url.searchParams.append(key, queryParams[key]);
+        }
     }
     return url.toString();
 }

@@ -1,10 +1,15 @@
+import ApiClient from "../apiClient";
 import { buildPathString, buildQueryString } from "../utils";
 {{#imports}}
 import { {{classname}} } from '../{{filename}}';
 {{/imports}}
 
 export default class {{classname}} {
+    private apiClient: ApiClient;
 
+    constructor(apiClient: ApiClient) {
+        this.apiClient = apiClient;
+    }
 {{#operations}}
 {{#operation}}
 
@@ -43,7 +48,7 @@ export default class {{classname}} {
         } = options;
     {{/hasOptionalParams}}
 
-    const path = buildPathString("{{path}}", {
+    const path = this.apiClient.apiUrl + buildPathString("{{path}}", {
         {{#pathParams}}
         {{paramName}}{{#hasMore}},{{/hasMore}}
         {{/pathParams}}
@@ -62,12 +67,12 @@ export default class {{classname}} {
     {{/formParams}}
     {{/hasFormParams}}
 
-    return fetch(query, {
+    return this.apiClient.fetch(query, {
         ...init,
         method: "{{httpMethod}}"{{#hasHeaderParams}},
         headers: {
         {{#headerParams}}
-            {{baseName}}: {{paramName}}{{#hasMore}},{{/hasMore}}
+            {{baseName}}: {{paramName}} || ""{{#hasMore}},{{/hasMore}}
         {{/headerParams}}
         }
         {{/hasHeaderParams}}

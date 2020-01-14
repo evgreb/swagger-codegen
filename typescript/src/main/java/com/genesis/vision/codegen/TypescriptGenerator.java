@@ -132,8 +132,13 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
      * it will be processed by the template engine.  Otherwise, it will be copied
      */
     supportingFiles.add(new SupportingFile("utils.mustache",   // the input template or file
-      sourceFolder,                                                       // the destination folder, relative `outputFolder`
-      "utils.ts")                                          // the output file
+            sourceFolder,                                                       // the destination folder, relative `outputFolder`
+            "utils.ts")                                          // the output file
+    );
+
+    supportingFiles.add(new SupportingFile("apiClient.mustache",   // the input template or file
+            sourceFolder,                                                       // the destination folder, relative `outputFolder`
+            "apiClient.ts")                                          // the output file
     );
   }
 
