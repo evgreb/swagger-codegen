@@ -71,6 +71,13 @@ export default class {{classname}} {
         {{/headerParams}}
         }
         {{/hasHeaderParams}}
+    }).then{{#returnType}}<{{returnType}}>{{/returnType}}((response: Response) => {
+        {{#returnTypeIsPrimitive}}
+        return response.text();
+        {{/returnTypeIsPrimitive}}
+        {{^returnTypeIsPrimitive}}
+        return response.json();
+        {{/returnTypeIsPrimitive}}
     })
     }
 {{/operation}}
