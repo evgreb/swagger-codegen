@@ -1,28 +1,28 @@
+{{#imports}}
+import { {{classname}} } from '../{{filename}}';
+{{/imports}}
 
-# This is a sample api mustache template.  It is representing a ficticous 
-# language and won't be usable or compile to anything without lots of changes.
-# Use it as an example.  You can access the variables in the generator object
-# like such:
+export default class {{classname}} {
 
-# use the package from the `apiPackage` variable
-package: {{package}}
-
-# operations block
 {{#operations}}
-classname: {{classname}}
-
-# loop over each operation in the API:
 {{#operation}}
 
-# each operation has an `operationId`:
-operationId: {{operationId}}
+    {{operationId}} = ({{#hasRequiredParams}}
+        {{#requiredParams}}
+        {{baseName}}: {{dataType}},
+        {{/requiredParams}}
+    {{/hasRequiredParams}}
+    {{#hasOptionalParams}}
+        options: {
+        {{#allParams}}{{^required}}
+            {{paramName}}?: {{{dataType}}}{{#hasMore}},{{/hasMore}}
+        {{/required}}
+        {{/allParams}}
+        } = {},
+    {{/hasOptionalParams}}
+        init: RequestInit = {}) => {
 
-# and parameters:
-{{#allParams}}
-{{paramName}}: {{dataType}}
-{{/allParams}}
-
+    }
 {{/operation}}
-
-# end of operations block
 {{/operations}}
+}

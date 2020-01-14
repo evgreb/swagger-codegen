@@ -166,4 +166,40 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
   public String getDefaultTemplateDir() {
     return templateDir;
   }
+
+  @Override
+  public Map<String, Object> postProcessOperations(Map<String, Object> operations) {
+    Map<String, Object> objs = (Map<String, Object>) operations.get("operations");
+
+    // Add filename information for api imports
+    objs.put("apiFilename", objs.get("classname"));
+
+    List<Map<String, Object>> imports = (List<Map<String, Object>>) operations.get("imports");
+    for (Map<String, Object> im : imports) {
+      im.put("filename", im.get("import"));
+      im.put("classname", getModelnameFromModelFilename(im.get("filename").toString()));
+    }
+
+    return operations;
+  }
+
+//  private String getApiFilenameFromClassname(String classname) {
+//    String name = classname.substring(0, classname.length() - "Service".length());
+//    return toApiFilename(name);
+//  }
+//
+  private String getModelnameFromModelFilename(String filename) {
+    String name = filename.substring((modelPackage() + File.separator).length());
+    return camelize(name);
+  }
+
+  @Override
+  public String toModelImport(String name) {
+    return modelPackage() + "/" + toModelFilename(name);
+  }
+
+  @Override
+  public String toApiImport(String name) {
+    return apiPackage() + "/" + toApiFilename(name);
+  }
 }
