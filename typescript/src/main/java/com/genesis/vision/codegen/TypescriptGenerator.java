@@ -33,7 +33,7 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
   private static Logger LOGGER = LoggerFactory.getLogger(AbstractTypeScriptClientCodegen.class);
 
   // source folder where to write the files
-  protected String sourceFolder = "";
+  protected String sourceFolder = "src";
   protected String apiVersion = "1.0.0";
 
   /**
@@ -138,7 +138,7 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
 
     supportingFiles.add(new SupportingFile("apiClient.mustache",   // the input template or file
             sourceFolder,                                                       // the destination folder, relative `outputFolder`
-            "apiClient.ts")                                          // the output file
+            "ApiClient.ts")                                          // the output file
     );
 
     supportingFiles.add(new SupportingFile("apis.mustache",   // the input template or file
@@ -152,7 +152,7 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
     );
 
     supportingFiles.add(new SupportingFile("index.mustache",   // the input template or file
-            sourceFolder,                                                       // the destination folder, relative `outputFolder`
+            "",                                                       // the destination folder, relative `outputFolder`
             "index.ts")                                          // the output file
     );
   }
