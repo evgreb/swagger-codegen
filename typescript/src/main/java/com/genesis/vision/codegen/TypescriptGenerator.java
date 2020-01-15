@@ -205,11 +205,6 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
     return operations;
   }
 
-//  private String getApiFilenameFromClassname(String classname) {
-//    String name = classname.substring(0, classname.length() - "Service".length());
-//    return toApiFilename(name);
-//  }
-//
   private String getModelnameFromModelFilename(String filename) {
     String name = filename.substring((modelPackage() + File.separator).length());
     return camelize(name);
@@ -232,7 +227,10 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
 
   @Override
   public String getTypeDeclaration(Schema propertySchema) {
-    if(propertySchema instanceof FileSchema || propertySchema instanceof BinarySchema) {
+    if (propertySchema instanceof MapSchema && hasSchemaProperties(propertySchema)) {
+      Schema inner = (Schema) propertySchema.getAdditionalProperties();
+      return "{ [key: string]: " + this.getTypeDeclaration(inner) + "; }";
+    } else if(propertySchema instanceof FileSchema || propertySchema instanceof BinarySchema) {
       return "File";
     }
     return super.getTypeDeclaration(propertySchema);

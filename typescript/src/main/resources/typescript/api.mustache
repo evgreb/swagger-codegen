@@ -82,7 +82,7 @@ export default class {{classname}} {
     }).then(handleErrors).then<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}} Response {{/returnType}}>((response: Response) => {
     {{#returnType}}
         {{#returnTypeIsPrimitive}}
-        return response.text();
+        return response.text() as unknown as {{{returnType}}};
         {{/returnTypeIsPrimitive}}
         {{^returnTypeIsPrimitive}}
         return response.json();
