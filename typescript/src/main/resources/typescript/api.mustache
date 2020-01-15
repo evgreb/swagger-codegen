@@ -1,5 +1,5 @@
 import ApiClient from "../apiClient";
-import { buildPathString, buildQueryString } from "../utils";
+import { buildPathString, buildQueryString, handleErrors } from "../utils";
 {{#imports}}
 import { {{classname}} } from '../{{filename}}';
 {{/imports}}
@@ -18,14 +18,12 @@ export default class {{classname}} {
         {{paramName}}: {{dataType}},
         {{/requiredParams}}
     {{/hasRequiredParams}}
-    {{#hasOptionalParams}}
         options: {
         {{#allParams}}{{^required}}
             {{paramName}}?: {{{dataType}}}{{#hasMore}},{{/hasMore}}
         {{/required}}
         {{/allParams}}
         } = {},
-    {{/hasOptionalParams}}
         init: RequestInit = {}) => {
     {{#hasRequiredParams}}
         {{#requiredParams}}
@@ -60,8 +58,12 @@ export default class {{classname}} {
     {{/queryParams}}
     })
 
+    let contentType = "application/json";
+    let body = {{#bodyParam}}JSON.stringify({{#required}}{{{paramName}}}{{/required}}{{^required}}options['{{paramName}}']{{/required}}){{/bodyParam}}{{^bodyParam}}null{{/bodyParam}};
+
     {{#hasFormParams}}
-    const body = new FormData();
+    body = new FormData();
+    contentType = "multipart/form-data";
     {{#formParams}}
     body.append("{{baseName}}", {{paramName}});
     {{/formParams}}
@@ -69,20 +71,26 @@ export default class {{classname}} {
 
     return this.apiClient.fetch(query, {
         ...init,
-        method: "{{httpMethod}}"{{#hasHeaderParams}},
+        method: "{{httpMethod}}",
+        body,
         headers: {
+            "Content-Type": contentType,
         {{#headerParams}}
             {{baseName}}: {{paramName}} || ""{{#hasMore}},{{/hasMore}}
         {{/headerParams}}
         }
-        {{/hasHeaderParams}}
-    }).then{{#returnType}}<{{returnType}}>{{/returnType}}((response: Response) => {
+    }).then(handleErrors).then<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}} Response {{/returnType}}>((response: Response) => {
+    {{#returnType}}
         {{#returnTypeIsPrimitive}}
         return response.text();
         {{/returnTypeIsPrimitive}}
         {{^returnTypeIsPrimitive}}
         return response.json();
         {{/returnTypeIsPrimitive}}
+    {{/returnType}}
+    {{^returnType}}
+        return response;
+    {{/returnType}}
     })
     }
 {{/operation}}

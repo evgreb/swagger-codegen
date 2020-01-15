@@ -1,0 +1,5 @@
+{{#apiInfo}}
+    {{#models}}
+export { {{#model}}{{classFilename}}{{/model}} } from "./{{importPath}}";
+    {{/models}}
+{{/apiInfo}}

@@ -33,3 +33,14 @@ export const buildQueryString = (path: string, queryParams: { [key: string]: any
     }
     return url.toString();
 }
+
+export const handleErrors = async (response: Response) => {
+    if (response.ok) {
+        return response;
+    }
+    const body = await response.json();
+    return Promise.reject({
+        body,
+        statusCode: response.status
+    });
+}

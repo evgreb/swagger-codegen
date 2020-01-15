@@ -140,6 +140,21 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
             sourceFolder,                                                       // the destination folder, relative `outputFolder`
             "apiClient.ts")                                          // the output file
     );
+
+    supportingFiles.add(new SupportingFile("apis.mustache",   // the input template or file
+            sourceFolder,                                                       // the destination folder, relative `outputFolder`
+            "apis.ts")                                          // the output file
+    );
+
+    supportingFiles.add(new SupportingFile("models.mustache",   // the input template or file
+            sourceFolder,                                                       // the destination folder, relative `outputFolder`
+            "models.ts")                                          // the output file
+    );
+
+    supportingFiles.add(new SupportingFile("index.mustache",   // the input template or file
+            sourceFolder,                                                       // the destination folder, relative `outputFolder`
+            "index.ts")                                          // the output file
+    );
   }
 
   /**
