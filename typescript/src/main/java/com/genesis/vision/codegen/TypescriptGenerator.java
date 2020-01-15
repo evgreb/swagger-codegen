@@ -33,7 +33,7 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
   private static Logger LOGGER = LoggerFactory.getLogger(AbstractTypeScriptClientCodegen.class);
 
   // source folder where to write the files
-  protected String sourceFolder = "src";
+  protected String sourceFolder = "";
   protected String apiVersion = "1.0.0";
 
   /**
