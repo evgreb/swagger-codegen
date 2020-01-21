@@ -75,7 +75,9 @@ export default class {{classname}} {
         method: "{{httpMethod}}",
         body,
         headers: {
+        {{^hasFormParams}}
             "Content-Type": contentType,
+        {{/hasFormParams}}
         {{#headerParams}}
             {{baseName}}: {{paramName}} || ""{{#hasMore}},{{/hasMore}}
         {{/headerParams}}
