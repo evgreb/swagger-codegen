@@ -58,15 +58,16 @@ export default class {{classname}} {
     {{/queryParams}}
     })
 
-    let contentType = "application/json";
     let body = {{#bodyParam}}JSON.stringify({{#required}}{{{paramName}}}{{/required}}{{^required}}options['{{paramName}}']{{/required}}){{/bodyParam}}{{^bodyParam}}null{{/bodyParam}};
 
     {{#hasFormParams}}
     body = new FormData();
-    contentType = "multipart/form-data";
     {{#formParams}}
     body.append("{{baseName}}", {{paramName}});
     {{/formParams}}
+    {{/hasFormParams}}
+    {{^hasFormParams}}
+    let contentType = "application/json";
     {{/hasFormParams}}
 
     return this.apiClient.fetch(query, {
