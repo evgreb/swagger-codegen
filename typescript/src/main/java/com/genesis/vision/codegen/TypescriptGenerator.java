@@ -90,18 +90,14 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
      * for multiple files for model, just put another entry in the `modelTemplateFiles` with
      * a different extension
      */
-    modelTemplateFiles.put(
-      "model.mustache", // the template to use
-      ".ts");       // the extension for each file to write
+    modelTemplateFiles.put("model.mustache", ".ts");
 
     /**
      * Api classes.  You can write classes for each Api file with the apiTemplateFiles map.
      * as with models, add multiple entries with different extensions for multiple files per
      * class
      */
-    apiTemplateFiles.put(
-      "api.mustache",   // the template to use
-      ".ts");       // the extension for each file to write
+    apiTemplateFiles.put("api.mustache",".ts");
 
     /**
      * Template Location.  This is the location which templates will be read from.  The generator
@@ -131,30 +127,13 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
      * entire object tree available.  If the input file has a suffix of `.mustache
      * it will be processed by the template engine.  Otherwise, it will be copied
      */
-    supportingFiles.add(new SupportingFile("utils.mustache",   // the input template or file
-            sourceFolder,                                                       // the destination folder, relative `outputFolder`
-            "utils.ts")                                          // the output file
-    );
-
-    supportingFiles.add(new SupportingFile("apiClient.mustache",   // the input template or file
-            sourceFolder,                                                       // the destination folder, relative `outputFolder`
-            "ApiClient.ts")                                          // the output file
-    );
-
-    supportingFiles.add(new SupportingFile("apis.mustache",   // the input template or file
-            sourceFolder,                                                       // the destination folder, relative `outputFolder`
-            "apis.ts")                                          // the output file
-    );
-
-    supportingFiles.add(new SupportingFile("models.mustache",   // the input template or file
-            sourceFolder,                                                       // the destination folder, relative `outputFolder`
-            "models.ts")                                          // the output file
-    );
-
-    supportingFiles.add(new SupportingFile("index.mustache",   // the input template or file
-            "",                                                       // the destination folder, relative `outputFolder`
-            "index.ts")                                          // the output file
-    );
+    supportingFiles.add(new SupportingFile("utils.mustache", sourceFolder, "utils.ts"));
+    supportingFiles.add(new SupportingFile("apiClient.mustache", sourceFolder, "ApiClient.ts"));
+    supportingFiles.add(new SupportingFile("apis.mustache", sourceFolder, "apis.ts"));
+    supportingFiles.add(new SupportingFile("models.mustache", sourceFolder, "models.ts"));
+    supportingFiles.add(new SupportingFile("index.mustache", "", "index.ts"));
+    supportingFiles.add(new SupportingFile("package.mustache", "", "package.json"));
+    supportingFiles.add(new SupportingFile("git_push.sh.mustache", "", "git_push.sh"));
   }
 
   /**
