@@ -24,7 +24,7 @@ export default class {{classname}} {
         {{/required}}
         {{/allParams}}
         } = {},
-        init: RequestInit = {}) => {
+        init: RequestInit = {}): Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Response{{/returnType}}> => {
     {{#hasRequiredParams}}
         {{#requiredParams}}
             {{#isConstEnumParam}}
@@ -63,7 +63,14 @@ export default class {{classname}} {
     {{#hasFormParams}}
     body = new FormData();
     {{#formParams}}
+    {{#required}}
     body.append("{{baseName}}", {{paramName}});
+    {{/required}}
+    {{^required}}
+    if (options['{{paramName}}'] !== undefined) {
+        body.append("{{baseName}}", options['{{paramName}}']);
+    }
+    {{/required}}
     {{/formParams}}
     {{/hasFormParams}}
     {{^hasFormParams}}
@@ -75,6 +82,7 @@ export default class {{classname}} {
         method: "{{httpMethod}}",
         body,
         headers: {
+            ...init.headers,
         {{^hasFormParams}}
             "Content-Type": contentType,
         {{/hasFormParams}}
