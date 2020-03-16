@@ -1,10 +1,9 @@
 {{#models}}
 {{#model}}
-{{#each imports}}
-import { {{this}} } from './{{this}}';
-{{#@last}}
+{{#tsImports}}
+import { {{classname}} } from './{{filename}}';
+{{/tsImports}}
 
-{{/@last}}{{/each}}
 {{#isEnum}}
 {{>modelEnum}}
 {{/isEnum}}{{^isEnum}}{{#isAlias}}

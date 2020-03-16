@@ -190,6 +190,49 @@ public class TypescriptGenerator extends AbstractTypeScriptClientCodegen {
   }
 
   @Override
+  public Map<String, Object> postProcessModels(Map<String, Object> objs) {
+    Map<String, Object> result = super.postProcessModels(objs);
+
+    // Add additional filename information for imports
+    List<Object> models = (List<Object>) postProcessModelsEnum(result).get("models");
+    for (Object _mo : models) {
+      Map<String, Object> mo = (Map<String, Object>) _mo;
+      CodegenModel cm = (CodegenModel) mo.get("model");
+      mo.put("tsImports", toTsImports(cm, cm.imports));
+    }
+
+    return result;
+  }
+
+  @Override
+  public Map<String, Object> postProcessAllModels(Map<String, Object> processedModels) {
+    for (Map.Entry<String, Object> entry : processedModels.entrySet()) {
+      final Map<String, Object> inner = (Map<String, Object>) entry.getValue();
+      final List<Map<String, Object>> models = (List<Map<String, Object>>) inner.get("models");
+      for (Map<String, Object> mo : models) {
+        final CodegenModel codegenModel = (CodegenModel) mo.get("model");
+        if (codegenModel.getIsAlias() && codegenModel.imports != null && !codegenModel.imports.isEmpty()) {
+          mo.put("tsImports", toTsImports(codegenModel, codegenModel.imports));
+        }
+      }
+    }
+    return processedModels;
+  }
+
+  private List<Map<String, String>> toTsImports(CodegenModel cm, Set<String> imports) {
+    List<Map<String, String>> tsImports = new ArrayList<>();
+    for (String im : imports) {
+      if (!im.equals(cm.classname)) {
+        HashMap<String, String> tsImport = new HashMap<>();
+        tsImport.put("classname", im);
+        tsImport.put("filename", toModelFilename(im));
+        tsImports.add(tsImport);
+      }
+    }
+    return tsImports;
+  }
+
+  @Override
   public String toModelImport(String name) {
     return modelPackage() + "/" + toModelFilename(name);
   }
